@@ -11,3 +11,11 @@ folders:
 sites:
     - map: homestead.app
       to: /home/vagrant/Code/Laravel/public
+
+databases:
+    - name: my_db
+      type: MySQL
+
+environment:
+    - variable: APP_ENV
+      value: local

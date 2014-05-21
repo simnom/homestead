@@ -51,5 +51,23 @@ class Homestead
           s.args = [site["map"], site["to"]]
       end
     end
+
+    # Configure All Of The PHP Environment Variables
+    if settings.has_key?("environment")
+      settings["environment"].each do |var|
+        config.vm.provision "shell" do |s|
+            s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php5/fpm/php-fpm.conf && service php5-fpm restart"
+            s.args = [var["variable"], var["value"]]
+        end
+      end
+    end
+
+     # Create All The Configured Databases
+    settings["databases"].each do |database|
+      config.vm.provision "shell" do |s|
+          s.inline = "bash /vagrant/scripts/database.sh $1 $2"
+          s.args = [database["name"], database["type"]]
+      end
+    end
   end
 end
